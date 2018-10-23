@@ -4,6 +4,7 @@
 - Ceph `vstart` cluster must be running
 - Read permission on  `../ceph/build/keyring`
   (e.g., `sudo chmod +r ../ceph/build/keyring`)
+- `vagrant plugin install vagrant-vbguest`
 
 # Usage
 
