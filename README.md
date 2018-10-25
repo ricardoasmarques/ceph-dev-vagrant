@@ -27,4 +27,4 @@ configure `/etc/ceph/ceph.conf` and `/etc/ceph/keyring` accordingly, or simply r
 
 ## Configure iSCSI
 
-[http://docs.ceph.com/docs/master/rbd/iscsi-overview/]()
+http://docs.ceph.com/docs/master/rbd/iscsi-overview/
