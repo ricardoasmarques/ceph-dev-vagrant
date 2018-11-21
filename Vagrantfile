@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 ceph_repo = '../ceph'
+ceph_iscsi_repo = '../ceph-iscsi'
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -15,6 +16,7 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "centos/7"
+  #config.vm.box = "opensuse/openSUSE-Tumbleweed-x86_64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -45,7 +47,10 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
+  config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder ceph_repo, "/home/vagrant/ceph"
+  config.vm.synced_folder ceph_iscsi_repo, "/home/vagrant/ceph-iscsi"
+  config.vm.synced_folder "./bin", "/home/vagrant/bin"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -131,20 +136,13 @@ EOF
     sudo cp org.kernel.TCMUService1.service /usr/share/dbus-1/system-services
     sudo cp tcmu-runner.service /lib/systemd/system
 
-    # Install ceph-iscsi-config
+    # Install ceph-iscsi
     cd /home/vagrant
-    git clone https://github.com/ceph/ceph-iscsi-config.git
-    cd ceph-iscsi-config
+    cd ceph-iscsi
     sudo python setup.py install
-    sudo cp /home/vagrant/ceph-iscsi-config/usr/lib/systemd/system/rbd-target-gw.service /lib/systemd/system
+    sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-gw.service /usr/lib/systemd/system
+    sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-api.service /usr/lib/systemd/system
     sudo yum -y install python-netifaces python-flask python-netaddr python-crypto
-
-    # Install ceph-iscsi-cli
-    cd /home/vagrant
-    git clone https://github.com/ceph/ceph-iscsi-cli.git
-    cd ceph-iscsi-cli
-    sudo python setup.py install
-    sudo cp /home/vagrant/ceph-iscsi-cli/usr/lib/systemd/system/rbd-target-api.service /lib/systemd/system
 
     # Configure ceph
     if [ ! -e /home/vagrant/ceph/build/ceph.conf ]; then
@@ -168,7 +166,7 @@ api_secure = false
 api_user = admin
 api_password = admin
 api_port = 5001
-trusted_ip_list = 192.168.100.201,192.168.100.202
+trusted_ip_list = 192.168.100.201,192.168.100.202,192.168.100.203
 EOF
 
     if ! rados lspools | grep -q '^rbd$'; then
@@ -177,15 +175,15 @@ EOF
 
     # Start services
     sudo systemctl daemon-reload
+    # tcmu-runner
+    sudo systemctl enable tcmu-runner
+    sudo systemctl restart tcmu-runner
     # ceph-iscsi-config
     sudo systemctl enable rbd-target-gw
     sudo systemctl restart rbd-target-gw
     # ceph-iscsi-cli
     sudo systemctl enable rbd-target-api
     sudo systemctl restart rbd-target-api
-    # tcmu-runner
-    sudo systemctl enable tcmu-runner
-    sudo systemctl restart tcmu-runner
   SHELL
 
   config.vm.define :node1 do |node1|
@@ -194,6 +192,9 @@ EOF
     node1.vm.provision "shell", inline: <<-SHELL
       if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
         echo "192.168.100.202 node2" >> /etc/hosts
+      fi
+      if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
+        echo "192.168.100.203 node3" >> /etc/hosts
       fi
     SHELL
   end
@@ -204,6 +205,22 @@ EOF
     node2.vm.provision "shell", inline: <<-SHELL
       if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
         echo "192.168.100.201 node1" >> /etc/hosts
+      fi
+      if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
+        echo "192.168.100.203 node3" >> /etc/hosts
+      fi
+    SHELL
+  end
+
+  config.vm.define :node3 do |node3|
+    node3.vm.hostname = "node3.ceph.local"
+    node3.vm.network :private_network, ip: "192.168.100.203"
+    node3.vm.provision "shell", inline: <<-SHELL
+      if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
+        echo "192.168.100.201 node1" >> /etc/hosts
+      fi
+      if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
+        echo "192.168.100.202 node2" >> /etc/hosts
       fi
     SHELL
   end
