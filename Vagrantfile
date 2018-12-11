@@ -142,7 +142,7 @@ EOF
     sudo python setup.py install
     sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-gw.service /usr/lib/systemd/system
     sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-api.service /usr/lib/systemd/system
-    sudo yum -y install python-netifaces python-flask python-netaddr python-crypto
+    sudo yum -y install python-netifaces python-flask python-netaddr python-cryptography
 
     # Configure ceph
     if [ ! -e /home/vagrant/ceph/build/ceph.conf ]; then
