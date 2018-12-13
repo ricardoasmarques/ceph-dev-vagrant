@@ -171,6 +171,7 @@ EOF
 
     if ! rados lspools | grep -q '^rbd$'; then
       ceph osd pool create rbd 1 1
+      rbd pool init rbd
     fi
 
     # Start services
