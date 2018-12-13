@@ -145,6 +145,7 @@ EOF
     sudo yum -y install python-netifaces python-flask python-netaddr python-cryptography
 
     # Configure ceph
+    # TODO use ceph-iscsi-setup.sh
     if [ ! -e /home/vagrant/ceph/build/ceph.conf ]; then
       echo "No ceph cluster is running"
       exit 1
