@@ -1,0 +1,6 @@
+libvirt_host: #IP_ADDRESS#
+libvirt_user: #USERNAME#
+libvirt_use_ssl: true
+nfs_auto_export: false
+install_iscsi: true
+
