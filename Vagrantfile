@@ -15,7 +15,7 @@ install_iscsi = settings.has_key?('install_iscsi') ?
 install_nfs = settings.has_key?('install_nfs') ?
               settings['install_nfs'] : true
 
-ceph_repo_url = "https://1.chacra.ceph.com/r/ceph/master/3a2b0906232c3199cb817226fcf71974c65b7118/centos/7/flavors/default/"
+ceph_repo_url = "https://4.chacra.ceph.com/r/ceph/master/fa24a0312fc91c7422b130408a6bb21095ace6c3/centos/7/flavors/default/"
 
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
