@@ -2,15 +2,40 @@
 
 - Ceph repo must exist in `../ceph` location
 - Ceph `vstart` cluster must be running
-- Read permission on  `../ceph/build/keyring`
-  (e.g., `sudo chmod +r ../ceph/build/keyring`)
-- `vagrant plugin install vagrant-vbguest`
+- Read permissions on keyring
+    -  `# chmod +r ../ceph/build/keyring`
+- Libvirt
+    - `# zypper install libvirt-devel libvirt-daemon`
+    - `# systemctl enable libvirtd`
+    - `# systemctl restart libvirtd`
+- Optionally, virtual machine manager can be useful
+    - `# zypper in virt-manager`
+
+# Setup
+
+Get the `opensuse-leap-15.1` vagrant box:
+
+    wget https://download.opensuse.org/repositories/home:/rjdias:/branches:/home:/jloehel:/vagrant:/images/images_leap_15_1/leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.10.1.vagrant.libvirt.box
+
+Add the `opensuse-leap-15.1` box to vagrant:
+
+    vagrant box add opensuse-leap-15.1 leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.10.1.vagrant.libvirt.box
+
+Install the `vagrant-libvirt` plugin
+
+    vagrant plugin install vagrant-libvirt
 
 # Usage
 
 ## Start VMs
 
-- `vagrant up`
+- `vagrant up --provider libvirt`
+
+> If you experience an error while running vagrant up, try the following: 
+> \- `#zypper in libgcrypt-devel`
+> \- `#systemctl stop vboxdrv`
+> \- `#systemctl start nfs`
+> \- `#SuSEfirewall2 off`
 
 ## Accessing VMs
 
@@ -57,31 +82,3 @@ disk add rbd.disk_1
 
 More information can be found at:
 http://docs.ceph.com/docs/master/rbd/iscsi-overview/
-
-# Troubleshooting
-
-## There was on error while executing VBoxManage
-
-Full error:
-```bash
-There was on error while executing VBoxManage, a CLI used by Vagrant for
-controlling VirtualBox. The command and stderr is shown below Command:
-["hostonlyif", "create"]
-
-Stderr: 0%... Progress state: NS_ERROR_FAILURE VBoxManage: error: Failed to
-create the host-only adapter VBoxManage: error: VBoxNetAdpCtl: Error while
-adding new interface: failed to open /dev/vboxnetctl: No such file or directory
-
-VBoxManage: error: Details: code NS_ERROR_FAILURE (0x80004005), component
-HostNetworkInterface, interface IHostNetworkInterface VBoxManage: error:
-Context: "int handleCreate(HandlerArg*, int, int*)" at line 68 of file
-VBoxManageHostonly.cpp
-```
-
-Solution:
-
-```bash
-  sudo modprobe vboxdrv
-  sudo modprobe vboxnetadp
-  sudo modprobe vboxnetflt
-```
