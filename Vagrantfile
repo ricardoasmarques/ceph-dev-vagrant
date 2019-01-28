@@ -15,14 +15,13 @@ install_iscsi = settings.has_key?('install_iscsi') ?
 install_nfs = settings.has_key?('install_nfs') ?
               settings['install_nfs'] : true
 
-ceph_repo_url = "https://1.chacra.ceph.com/r/ceph/master/3a2b0906232c3199cb817226fcf71974c65b7118/centos/7/flavors/default/"
 
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
-  config.vm.box = "centos/7"
+  config.vm.box = "opensuse-leap-15.1"
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
-  config.vm.provision "file", source: "bin", destination: "."
+  config.vm.provision "file", source: "bin/", destination: "/home/vagrant/"
 
   config.vm.provider "libvirt" do |lv, override|
     if settings.has_key?('libvirt_host') then
@@ -57,44 +56,14 @@ Vagrant.configure("2") do |config|
     override.vm.synced_folder ceph_repo, "/home/vagrant/ceph"
     override.vm.synced_folder ceph_iscsi_repo, "/home/vagrant/ceph-iscsi"
   end
-
   config.vm.provision "shell", inline: <<-SHELL
-  cat > /etc/yum.repos.d/ceph.repo <<EOF
-[ceph]
-name=Ceph packages for x86_64
-# baseurl=https://download.ceph.com/rpm-mimic/el7/x86_64
-baseurl=#{ceph_repo_url}/x86_64
-enabled=1
-priority=2
-gpgcheck=1
-gpgkey=https://download.ceph.com/keys/release.asc
-
-[ceph-noarch]
-name=Ceph noarch packages
-# baseurl=https://download.ceph.com/rpm-mimic/el7/noarch
-baseurl=#{ceph_repo_url}/noarch
-enabled=1
-priority=2
-gpgcheck=1
-gpgkey=https://download.ceph.com/keys/release.asc
-
-[ceph-source]
-name=Ceph source packages
-# baseurl=https://download.ceph.com/rpm-mimic/el7/SRPMS
-baseurl=#{ceph_repo_url}/SRPMS
-enabled=0
-priority=2
-gpgcheck=1
-gpgkey=https://download.ceph.com/keys/release.asc
-EOF
-
-    sudo rpm --import 'https://download.ceph.com/keys/release.asc'
-    # sudo yum -y update
-    sudo yum -y install epel-release
-    sudo yum -y install git python-setuptools pyOpenSSL vim jq
+    zypper ar https://download.opensuse.org/distribution/leap/15.1/repo/oss/ leap15.1
+    zypper ar https://download.opensuse.org/repositories/filesystems:/ceph/openSUSE_Leap_15.0/filesystems:ceph.repo
+    zypper ar https://download.opensuse.org/repositories/home:/dmdiss:/tcmu-runner-1.3/openSUSE_Leap_15.0/home:dmdiss:tcmu-runner-1.3.repo
+    zypper --gpg-auto-import-keys ref
 
     # Install ceph
-    sudo yum -y install ceph-base ceph-mon --nogpgcheck
+    zypper -n install ceph-base ceph-mon vim git
 
     # Configure ceph
     # TODO use ceph-iscsi-setup.sh
@@ -103,15 +72,23 @@ EOF
       exit 1
     fi
     mkdir -p /etc/ceph
-    MON_ADDRS=`cat /home/vagrant/ceph/build/ceph.conf | grep 'mon addr' | sed -e 's/.*mon addr = //'`
-    MON_ADDRS=`echo $MON_ADDRS | sed 's/ /, /g'`
+    MON_ADDRS=`cat /home/vagrant/ceph/build/ceph.conf \
+              | grep 'mon host' \
+              | sed -e 's/.*mon host =  //' \
+              | sed -e 's/] /]\\n/g' \
+              | sed -e 's/.*v2:\\([0-9\.]\\+:[0-9]\\+\\),.*/\\1/g' \
+              | sed -e ':a;N;$!ba;s/\\n/,/g'`
+
+    echo "MON_ADDRS=$MON_ADDRS"
+    # MON_ADDRS=`cat /home/vagrant/ceph/build/ceph.conf | grep 'mon addrs' | sed -e 's/.*mon addrs = //'`
+    # MON_ADDRS=`echo $MON_ADDRS | sed 's/ /, /g'`
     echo "[client]" > /etc/ceph/ceph.conf
     echo "  mon host = $MON_ADDRS" >> /etc/ceph/ceph.conf
     echo "  keyring = /etc/ceph/ceph.client.admin.keyring" >> /etc/ceph/ceph.conf
     sudo cp /home/vagrant/ceph/build/keyring /etc/ceph/ceph.client.admin.keyring
 
     if #{install_iscsi}; then
-      /home/vagrant/ceph-iscsi-provision.sh
+      /home/vagrant/bin/ceph-iscsi-provision.sh
     fi
 
     if #{install_nfs}; then
@@ -124,6 +101,7 @@ EOF
     node1.vm.hostname = "node1.ceph.local"
     node1.vm.network :private_network, ip: "192.168.100.201"
     node1.vm.provision "shell", inline: <<-SHELL
+      hostnamectl set-hostname node1.ceph.local
       if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
         echo "192.168.100.202 node2" >> /etc/hosts
       fi
@@ -137,6 +115,7 @@ EOF
     node2.vm.hostname = "node2.ceph.local"
     node2.vm.network :private_network, ip: "192.168.100.202"
     node2.vm.provision "shell", inline: <<-SHELL
+      hostnamectl set-hostname node2.ceph.local
       if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
         echo "192.168.100.201 node1" >> /etc/hosts
       fi
@@ -150,6 +129,7 @@ EOF
     node3.vm.hostname = "node3.ceph.local"
     node3.vm.network :private_network, ip: "192.168.100.203"
     node3.vm.provision "shell", inline: <<-SHELL
+      hostnamectl set-hostname node3.ceph.local
       if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
         echo "192.168.100.201 node1" >> /etc/hosts
       fi
