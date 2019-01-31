@@ -15,11 +15,11 @@
 
 Get the `opensuse-leap-15.1` vagrant box:
 
-    wget https://download.opensuse.org/repositories/home:/rjdias:/branches:/home:/jloehel:/vagrant:/images/images_leap_15_1/leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.10.1.vagrant.libvirt.box
+    wget https://download.opensuse.org/repositories/home:/rjdias:/branches:/home:/jloehel:/vagrant:/images/images_leap_15_1/leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.11.2.vagrant.libvirt.box
 
 Add the `opensuse-leap-15.1` box to vagrant:
 
-    vagrant box add opensuse-leap-15.1 leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.10.1.vagrant.libvirt.box
+    vagrant box add opensuse-leap-15.1 leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.11.2.vagrant.libvirt.box
 
 Install the `vagrant-libvirt` plugin
 
