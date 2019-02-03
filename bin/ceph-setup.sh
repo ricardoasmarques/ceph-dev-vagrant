@@ -7,7 +7,7 @@ if [ ! -e /home/vagrant/ceph/build/ceph.conf ]; then
               | grep 'mon host' \
               | sed -e 's/.*mon host =  //' \
               | sed -e 's/] /]\\n/g' \
-              | sed -e 's/.*v2:\\([0-9\.]\\+:[0-9]\\+\\),.*/\\1/g' \
+              | sed -e 's/.*,v1:\\([0-9\.]\\+:[0-9]\\+\\)\]/\\1/g' \
               | sed -e ':a;N;$!ba;s/\\n/,/g'`
 
     echo "MON_ADDRS=$MON_ADDRS"
