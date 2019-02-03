@@ -4,4 +4,5 @@ libvirt_use_ssl: true
 nfs_auto_export: false
 install_nfs: false
 install_iscsi: true
+install_ceph_iscsi_pkg: false
 
