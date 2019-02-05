@@ -15,6 +15,9 @@ install_iscsi = settings.has_key?('install_iscsi') ?
 install_nfs = settings.has_key?('install_nfs') ?
               settings['install_nfs'] : true
 
+install_lrbd = settings.has_key?('install_lrbd') ?
+               settings['install_lrbd'] : true
+
 install_ceph_iscsi_from_packages = settings.has_key?('install_ceph_iscsi_pkg') ?
                                    (settings['install_ceph_iscsi_pkg'] ? 'pkg' : '') : ''
 
@@ -59,10 +62,10 @@ Vagrant.configure("2") do |config|
     zypper ar https://download.opensuse.org/distribution/leap/15.1/repo/oss/ leap15.1
     zypper ar https://download.opensuse.org/repositories/filesystems:/ceph/openSUSE_Leap_15.0/filesystems:ceph.repo
     zypper ar https://download.opensuse.org/repositories/home:/dmdiss:/tcmu-runner-1.3/openSUSE_Leap_15.0/home:dmdiss:tcmu-runner-1.3.repo
-    zypper ar https://download.opensuse.org/repositories/home:/rjdias:/branches:/filesystems:/ceph:/nautilus/openSUSE_Leap_15.1/home:rjdias:branches:filesystems:ceph:nautilus.repo
-    zypper ar https://download.opensuse.org/repositories/home:/rjdias:/branches:/filesystems:/ceph:/nautilus/openSUSE_Tumbleweed nfs-ganesha-repo
-    zypper mr -p 70 home_rjdias_branches_filesystems_ceph_nautilus
-    zypper mr -p 60 nfs-ganesha-repo
+    zypper ar https://download.opensuse.org/repositories/home:/rjdias:/branches:/filesystems:/ceph:/nautilus/openSUSE_Leap_15.1/ rdias-leap15.1-repo
+    zypper ar https://download.opensuse.org/repositories/home:/rjdias:/branches:/filesystems:/ceph:/nautilus/openSUSE_Tumbleweed rdias-tw-repo
+    zypper mr -p 70 rdias-leap15.1-repo
+    zypper mr -p 80 rdias-tw-repo
     zypper --gpg-auto-import-keys ref
 
     # Install ceph
@@ -77,6 +80,10 @@ Vagrant.configure("2") do |config|
 
     if #{install_nfs}; then
       /home/vagrant/bin/ceph-nfs-provision.sh
+    fi
+
+    if #{install_lrbd}; then
+      /home/vagrant/bin/lrbd-provision.sh
     fi
 
   SHELL
