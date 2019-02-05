@@ -55,16 +55,14 @@ Vagrant.configure("2") do |config|
                           :linux__nfs_options => ['rw','no_subtree_check','all_squash','insecure']
   end
 
-  config.vm.provider "virtualbox" do |lv, override|
-    override.vm.synced_folder ceph_repo, "/home/vagrant/ceph"
-    override.vm.synced_folder ceph_iscsi_repo, "/home/vagrant/ceph-iscsi"
-  end
-  config.vm.provision "shell", inline: <<-SHELL
+  common_provision = <<-SHELL
     zypper ar https://download.opensuse.org/distribution/leap/15.1/repo/oss/ leap15.1
     zypper ar https://download.opensuse.org/repositories/filesystems:/ceph/openSUSE_Leap_15.0/filesystems:ceph.repo
     zypper ar https://download.opensuse.org/repositories/home:/dmdiss:/tcmu-runner-1.3/openSUSE_Leap_15.0/home:dmdiss:tcmu-runner-1.3.repo
     zypper ar https://download.opensuse.org/repositories/home:/rjdias:/branches:/filesystems:/ceph:/nautilus/openSUSE_Leap_15.1/home:rjdias:branches:filesystems:ceph:nautilus.repo
+    zypper ar https://download.opensuse.org/repositories/home:/rjdias:/branches:/filesystems:/ceph:/nautilus/openSUSE_Tumbleweed nfs-ganesha-repo
     zypper mr -p 70 home_rjdias_branches_filesystems_ceph_nautilus
+    zypper mr -p 60 nfs-ganesha-repo
     zypper --gpg-auto-import-keys ref
 
     # Install ceph
@@ -83,6 +81,12 @@ Vagrant.configure("2") do |config|
 
   SHELL
 
+
+  config.vm.provider "virtualbox" do |lv, override|
+    override.vm.synced_folder ceph_repo, "/home/vagrant/ceph"
+    override.vm.synced_folder ceph_iscsi_repo, "/home/vagrant/ceph-iscsi"
+  end
+
   config.vm.define :node1 do |node1|
     node1.vm.hostname = "node1.ceph.local"
     node1.vm.network :private_network, ip: "192.168.100.201"
@@ -94,6 +98,8 @@ Vagrant.configure("2") do |config|
       if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
         echo "192.168.100.203 node3" >> /etc/hosts
       fi
+
+      #{common_provision}
     SHELL
   end
 
@@ -108,6 +114,8 @@ Vagrant.configure("2") do |config|
       if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
         echo "192.168.100.203 node3" >> /etc/hosts
       fi
+
+      #{common_provision}
     SHELL
   end
 
@@ -122,7 +130,8 @@ Vagrant.configure("2") do |config|
       if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
         echo "192.168.100.202 node2" >> /etc/hosts
       fi
+
+      #{common_provision}
     SHELL
   end
-
 end
