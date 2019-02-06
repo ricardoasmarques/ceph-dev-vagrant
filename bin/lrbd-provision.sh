@@ -1,7 +1,7 @@
 #!/bin/bash
 
 zypper -n install lrbd ceph-iscsi open-iscsi libiscsi-utils multipath-tools \
-                  tcmu-runner-handler-rbd tcmu-runner
+                  tcmu-runner-handler-rbd tcmu-runner python3-pyOpenSSL
 
 cat >/tmp/lrbd.conf <<EOF
 {
