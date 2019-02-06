@@ -15,5 +15,7 @@ if [ ! -e /home/vagrant/ceph/build/ceph.conf ]; then
     # MON_ADDRS=`echo $MON_ADDRS | sed 's/ /, /g'`
     echo "[client]" > /etc/ceph/ceph.conf
     echo "  mon host = $MON_ADDRS" >> /etc/ceph/ceph.conf
-    # echo "  keyring = /etc/ceph/ceph.client.admin.keyring" >> /etc/ceph/ceph.conf
+    echo "" >> /etc/ceph/ceph.conf
+    echo "[client.admin]" >> /etc/ceph/ceph.conf
+    echo "  keyring = /etc/ceph/ceph.client.admin.keyring" >> /etc/ceph/ceph.conf
     sudo cp /home/vagrant/ceph/build/keyring /etc/ceph/ceph.client.admin.keyring

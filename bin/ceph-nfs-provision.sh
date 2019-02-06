@@ -33,7 +33,7 @@ EXPORT {
   Transports = UDP, TCP;
   FSAL {
     Name = CEPH;
-    User_ID = "fs";
+    User_ID = "admin";
   }
 }
 EOF
