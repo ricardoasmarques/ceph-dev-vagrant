@@ -2,7 +2,8 @@ libvirt_host: #IP_ADDRESS#
 libvirt_user: #USERNAME#
 libvirt_use_ssl: true
 nfs_auto_export: false
-install_nfs: false
+install_nfs: true
 install_iscsi: true
 install_ceph_iscsi_pkg: false
+install_lrbd: false
 
