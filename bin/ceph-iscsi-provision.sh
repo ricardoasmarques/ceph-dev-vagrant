@@ -36,6 +36,11 @@ if ! rados lspools | grep -q '^rbd$'; then
   rbd pool init rbd
 fi
 
+ceph dashboard iscsi-gateway-add node1 http://admin:admin@192.168.100.201:5001
+ceph dashboard iscsi-gateway-add node2 http://admin:admin@192.168.100.202:5001
+ceph dashboard iscsi-gateway-add node3 http://admin:admin@192.168.100.203:5001
+ceph dashboard iscsi-gateway-list
+
 # Start services
 # tcmu-runner
 sudo systemctl enable tcmu-runner
