@@ -28,7 +28,7 @@ api_secure = false
 api_user = admin
 api_password = admin
 api_port = 5001
-trusted_ip_list = 192.168.100.201,192.168.100.202,192.168.100.203
+trusted_ip_list = 192.168.100.201,192.168.100.202,192.168.100.203,192.168.100.1
 EOF
 
 if ! rados lspools | grep -q '^rbd$'; then
