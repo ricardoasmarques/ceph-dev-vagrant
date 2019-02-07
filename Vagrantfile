@@ -83,7 +83,7 @@ Vagrant.configure("2") do |config|
     fi
 
     if #{install_lrbd}; then
-      /home/vagrant/bin/lrbd-provision.sh
+      /home/vagrant/bin/lrbd-provision.sh #{install_ceph_iscsi_from_packages}
     fi
 
   SHELL

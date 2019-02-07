@@ -3,6 +3,21 @@
 zypper -n install lrbd ceph-iscsi open-iscsi libiscsi-utils multipath-tools \
                   tcmu-runner-handler-rbd tcmu-runner python3-pyOpenSSL
 
+# Install ceph-iscsi
+if [ -z $1 ]; then
+  zypper -n install python3-netifaces python3-netaddr python3-rpm python3-Flask
+
+  cd /home/vagrant
+  cp -r ceph-iscsi ceph-iscsi-local
+  cd ceph-iscsi-local
+  sudo python3 setup.py install
+  sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-gw.service /usr/lib/systemd/system
+  sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-api.service /usr/lib/systemd/system
+  sudo systemctl daemon-reload
+else
+  sudo zypper -n install ceph-iscsi
+fi
+
 cat >/tmp/lrbd.conf <<EOF
 {
   "pools": [{
