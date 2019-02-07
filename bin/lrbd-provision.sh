@@ -1,11 +1,11 @@
 #!/bin/bash
 
-zypper -n install lrbd ceph-iscsi open-iscsi libiscsi-utils multipath-tools \
-                  tcmu-runner-handler-rbd tcmu-runner python3-pyOpenSSL
-
 # Install ceph-iscsi
 if [ -z $1 ]; then
-  zypper -n install python3-netifaces python3-netaddr python3-rpm python3-Flask
+  zypper -n install lrbd targetcli-fb tcmu-runner python3-configshell \
+                    python3-netifaces python3-netaddr python3-rpm \
+                    python3-Flask python3-pyOpenSSL tcmu-runner-handler-rbd \
+                    open-iscsi libiscsi-utils multipath-tools
 
   cd /home/vagrant
   cp -r ceph-iscsi ceph-iscsi-local
@@ -15,7 +15,9 @@ if [ -z $1 ]; then
   sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-api.service /usr/lib/systemd/system
   sudo systemctl daemon-reload
 else
-  sudo zypper -n install ceph-iscsi
+  zypper -n install lrbd ceph-iscsi open-iscsi libiscsi-utils multipath-tools \
+                    tcmu-runner-handler-rbd tcmu-runner python3-pyOpenSSL
+  zypper -n install ceph-iscsi
 fi
 
 cat >/tmp/lrbd.conf <<EOF
