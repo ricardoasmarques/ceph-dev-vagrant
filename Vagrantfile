@@ -92,6 +92,10 @@ Vagrant.configure("2") do |config|
     override.vm.synced_folder ceph_iscsi_repo, "/home/vagrant/ceph-iscsi"
   end
 
+  if settings.has_key?('bridge') then
+    config.vm.network "public_network", :dev => settings['bridge'], :mode => 'bridge', :type => "bridge"
+  end
+
   config.vm.define :node1 do |node1|
     node1.vm.hostname = "node1.ceph.local"
     node1.vm.network :private_network, ip: "192.168.100.201"

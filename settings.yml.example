@@ -6,4 +6,4 @@ install_nfs: true
 install_iscsi: true
 install_ceph_iscsi_pkg: false
 install_lrbd: false
-
+bridge: #"BRIDGE_NAME"#
