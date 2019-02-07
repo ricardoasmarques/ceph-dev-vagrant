@@ -121,6 +121,11 @@ api_port = 5001
 trusted_ip_list = 192.168.100.201,192.168.100.202,192.168.100.203,192.168.100.1
 EOF
 
+ceph dashboard iscsi-gateway-add node1 http://admin:admin@192.168.100.201:5001
+ceph dashboard iscsi-gateway-add node2 http://admin:admin@192.168.100.202:5001
+ceph dashboard iscsi-gateway-add node3 http://admin:admin@192.168.100.203:5001
+ceph dashboard iscsi-gateway-list
+
 systemctl enable tcmu-runner
 systemctl restart tcmu-runner
 
