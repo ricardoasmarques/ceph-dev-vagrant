@@ -91,6 +91,13 @@ ceph auth get-or-create client.igw.${HOST} \
                         mgr 'allow r' \
                         -o /etc/ceph/ceph.client.igw.${HOST}.keyring
 
+cat >>/etc/ceph/ceph.conf <<EOF
+
+[client.igw.${HOST}]
+  keyring = /etc/ceph/ceph.client.igw.${HOST}.keyring
+
+EOF
+
 cat > /etc/sysconfig/lrbd <<EOF
 ## Path:        Applications/System
 ## Description: Ceph iSCSI configuration
@@ -135,3 +142,4 @@ systemctl restart rbd-target-gw
 systemctl enable rbd-target-api
 systemctl restart rbd-target-api
 
+git clone https://github.com/ricardoasmarques/lrbd-to-ceph-iscsi.git
