@@ -29,11 +29,17 @@ ceph auth get-or-create client.igw.${HOST} \
                         mgr 'allow r' \
                         -o /etc/ceph/ceph.client.igw.${HOST}.keyring
 
+cat >>/etc/ceph/ceph.conf <<EOF
+
+[client.igw.${HOST}]
+  keyring = /etc/ceph/ceph.client.igw.${HOST}.keyring
+
+EOF
+
 cat > /etc/ceph/iscsi-gateway.cfg <<EOF
 # http://docs.ceph.com/docs/master/rbd/iscsi-target-cli/
 [config]
 cluster_name = ceph
-gateway_keyring = ceph.client.igw.${HOST}.keyring
 cluster_client_name = client.igw.${HOST}
 api_secure = false
 api_user = admin
