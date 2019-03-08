@@ -41,7 +41,7 @@ cat > /etc/ceph/iscsi-gateway.cfg <<EOF
 [config]
 cluster_name = ceph
 cluster_client_name = client.igw.${HOST}
-api_secure = false
+api_secure = true
 api_user = admin
 api_password = admin
 api_port = 5001
