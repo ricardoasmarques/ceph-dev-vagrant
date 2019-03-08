@@ -28,6 +28,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.provision "file", source: "bin/", destination: "/home/vagrant/"
+  config.vm.provision "file", source: "keys/", destination: "/home/vagrant/"
 
   config.vm.provider "libvirt" do |lv, override|
     if settings.has_key?('libvirt_host') then
