@@ -47,20 +47,22 @@ api_password = admin
 api_port = 5001
 trusted_ip_list = 192.168.100.201,192.168.100.202,192.168.100.203,192.168.100.1
 # Uncomment this to enable password encryption
-# priv_key = keys/private_key
-# pub_key = keys/public_key
+priv_key = private_key
+pub_key = public_key
 EOF
 
-sudo cp -r /home/vagrant/keys /etc/ceph
+sudo cp /home/vagrant/keys/* /etc/ceph/
+
 
 if ! rados lspools | grep -q '^rbd$'; then
   ceph osd pool create rbd 50
   rbd pool init rbd
 fi
 
-ceph dashboard iscsi-gateway-add node1 http://admin:admin@192.168.100.201:5001
-ceph dashboard iscsi-gateway-add node2 http://admin:admin@192.168.100.202:5001
-ceph dashboard iscsi-gateway-add node3 http://admin:admin@192.168.100.203:5001
+ceph dashboard iscsi-gateway-add node1 https://admin:admin@192.168.100.201:5001
+ceph dashboard iscsi-gateway-add node2 https://admin:admin@192.168.100.202:5001
+ceph dashboard iscsi-gateway-add node3 https://admin:admin@192.168.100.203:5001
+ceph dashboard set-iscsi-api-ssl-verification false
 ceph dashboard iscsi-gateway-list
 
 # Start services
