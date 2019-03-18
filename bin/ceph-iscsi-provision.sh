@@ -59,12 +59,6 @@ if ! rados lspools | grep -q '^rbd$'; then
   rbd pool init rbd
 fi
 
-ceph dashboard iscsi-gateway-add node1 https://admin:admin@192.168.100.201:5001
-ceph dashboard iscsi-gateway-add node2 https://admin:admin@192.168.100.202:5001
-ceph dashboard iscsi-gateway-add node3 https://admin:admin@192.168.100.203:5001
-ceph dashboard set-iscsi-api-ssl-verification false
-ceph dashboard iscsi-gateway-list
-
 # Start services
 # tcmu-runner
 sudo systemctl enable tcmu-runner
@@ -73,3 +67,12 @@ sudo systemctl restart tcmu-runner
 sudo systemctl enable rbd-target-gw
 sudo systemctl enable rbd-target-api
 sudo systemctl restart rbd-target-gw  # this will also start rbd-target-api
+
+sleep 5
+
+ceph dashboard set-iscsi-api-ssl-verification false
+ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.201:5001
+ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.202:5001
+ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.203:5001
+ceph dashboard iscsi-gateway-list
+
