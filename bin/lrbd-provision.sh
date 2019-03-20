@@ -120,18 +120,18 @@ cat > /etc/ceph/iscsi-gateway.cfg <<EOF
 # http://docs.ceph.com/docs/master/rbd/iscsi-target-cli/
 [config]
 cluster_name = ceph
-gateway_keyring = ceph.client.admin.keyring
-api_secure = false
+cluster_client_name = client.igw.${HOST}
+api_secure = true
 api_user = admin
 api_password = admin
 api_port = 5001
 trusted_ip_list = 192.168.100.201,192.168.100.202,192.168.100.203,192.168.100.1
+# Uncomment this to enable password encryption
+priv_key = private_key
+pub_key = public_key
 EOF
 
-ceph dashboard iscsi-gateway-add node1 http://admin:admin@192.168.100.201:5001
-ceph dashboard iscsi-gateway-add node2 http://admin:admin@192.168.100.202:5001
-ceph dashboard iscsi-gateway-add node3 http://admin:admin@192.168.100.203:5001
-ceph dashboard iscsi-gateway-list
+sudo cp /home/vagrant/keys/* /etc/ceph/
 
 systemctl enable tcmu-runner
 systemctl restart tcmu-runner
@@ -141,5 +141,13 @@ systemctl restart rbd-target-gw
 
 systemctl enable rbd-target-api
 systemctl restart rbd-target-api
+
+sleep 5
+
+ceph dashboard set-iscsi-api-ssl-verification false
+ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.201:5001
+ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.202:5001
+ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.203:5001
+ceph dashboard iscsi-gateway-list
 
 git clone https://github.com/ricardoasmarques/lrbd-to-ceph-iscsi.git
