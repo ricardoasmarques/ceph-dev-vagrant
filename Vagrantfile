@@ -100,6 +100,11 @@ Vagrant.configure("2") do |config|
   config.vm.define :node1 do |node1|
     node1.vm.hostname = "node1.ceph.local"
     node1.vm.network :private_network, ip: "192.168.100.201"
+    node1.vm.network "private_network",
+        ip: "192.168.200.201",
+        libvirt__guest_ipv6: "yes",
+        libvirt__ipv6_address: "fd7b:6eb4:321b:33e",
+        libvirt__ipv6_prefix: "64"
     node1.vm.provision "shell", inline: <<-SHELL
       hostnamectl set-hostname node1.ceph.local
       if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
@@ -116,6 +121,11 @@ Vagrant.configure("2") do |config|
   config.vm.define :node2 do |node2|
     node2.vm.hostname = "node2.ceph.local"
     node2.vm.network :private_network, ip: "192.168.100.202"
+    node2.vm.network "private_network",
+        ip: "192.168.200.202",
+        libvirt__guest_ipv6: "yes",
+        libvirt__ipv6_address: "fd7b:6eb4:321b:33e",
+        libvirt__ipv6_prefix: "64"
     node2.vm.provision "shell", inline: <<-SHELL
       hostnamectl set-hostname node2.ceph.local
       if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
@@ -132,6 +142,11 @@ Vagrant.configure("2") do |config|
   config.vm.define :node3 do |node3|
     node3.vm.hostname = "node3.ceph.local"
     node3.vm.network :private_network, ip: "192.168.100.203"
+    node3.vm.network "private_network",
+        ip: "192.168.200.201",
+        libvirt__guest_ipv6: "yes",
+        libvirt__ipv6_address: "fd7b:6eb4:321b:33e",
+        libvirt__ipv6_prefix: "64"
     node3.vm.provision "shell", inline: <<-SHELL
       hostnamectl set-hostname node3.ceph.local
       if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
