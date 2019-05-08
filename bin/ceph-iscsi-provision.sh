@@ -66,7 +66,7 @@ sudo systemctl restart tcmu-runner
 # ceph-iscsi
 sudo systemctl enable rbd-target-gw
 sudo systemctl enable rbd-target-api
-sudo systemctl restart rbd-target-gw  # this will also start rbd-target-api
+sudo systemctl restart rbd-target-api
 
 sleep 5
 
