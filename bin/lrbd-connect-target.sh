@@ -41,4 +41,3 @@ mount /dev/sda /mnt
 sleep 1
 
 i=0; while true; do i=$((i + 1)); echo "$i $(date +%T.%N)" | tee -a /mnt/log.txt; sleep 0.5; done
-

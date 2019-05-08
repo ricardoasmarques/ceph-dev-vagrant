@@ -66,7 +66,10 @@ sudo systemctl restart tcmu-runner
 # ceph-iscsi
 sudo systemctl enable rbd-target-gw
 sudo systemctl enable rbd-target-api
-sudo systemctl restart rbd-target-api
+sudo systemctl stop rbd-target-gw
+sudo systemctl stop rbd-target-api
+sudo systemctl start rbd-target-api
+sudo systemctl start rbd-target-gw
 
 sleep 5
 
@@ -75,4 +78,3 @@ ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.201:5001
 ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.202:5001
 ceph dashboard iscsi-gateway-add https://admin:admin@192.168.100.203:5001
 ceph dashboard iscsi-gateway-list
-

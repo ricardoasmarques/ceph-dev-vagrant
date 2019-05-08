@@ -102,5 +102,3 @@ EOF
 systemctl start nfs-ganesha
 
 ceph dashboard set-ganesha-clusters-rados-pool-namespace ganesha
-
-

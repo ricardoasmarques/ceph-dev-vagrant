@@ -137,10 +137,11 @@ systemctl enable tcmu-runner
 systemctl restart tcmu-runner
 
 systemctl enable rbd-target-gw
-systemctl restart rbd-target-gw
-
 systemctl enable rbd-target-api
-systemctl restart rbd-target-api
+systemctl stop rbd-target-gw
+systemctl stop rbd-target-api
+systemctl start rbd-target-api
+systemctl start rbd-target-gw
 
 sleep 5
 

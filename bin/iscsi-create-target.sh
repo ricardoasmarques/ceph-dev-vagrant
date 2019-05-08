@@ -9,4 +9,3 @@ gwcli /iscsi-targets/iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw/hosts/iqn.1994-05
 gwcli /iscsi-targets/iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw/hosts auth nochap
 
 gwcli ls
-
