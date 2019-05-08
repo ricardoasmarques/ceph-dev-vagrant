@@ -63,8 +63,6 @@ Vagrant.configure("2") do |config|
     zypper ar https://download.opensuse.org/distribution/leap/15.1/repo/oss/ leap15.1
     zypper ar https://download.opensuse.org/repositories/filesystems:/ceph/openSUSE_Leap_15.0/filesystems:ceph.repo
     zypper ar https://download.opensuse.org/repositories/home:/dmdiss:/tcmu-runner-1.3/openSUSE_Leap_15.0/home:dmdiss:tcmu-runner-1.3.repo
-    zypper ar https://download.opensuse.org/repositories/home:/rjdias:/branches:/filesystems:/ceph:/nautilus/openSUSE_Leap_15.1/ rdias-leap15.1-repo
-    zypper mr -p 70 rdias-leap15.1-repo
     zypper --gpg-auto-import-keys ref
 
     # Install ceph
