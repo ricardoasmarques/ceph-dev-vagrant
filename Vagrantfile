@@ -100,11 +100,11 @@ Vagrant.configure("2") do |config|
     node1.vm.network :private_network, ip: "192.168.100.201"
     node1.vm.provision "shell", inline: <<-SHELL
       hostnamectl set-hostname node1.ceph.local
-      if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
-        echo "192.168.100.202 node2" >> /etc/hosts
+      if ! grep -q '^192.168.100.202 node2 node2.ceph.local$' /etc/hosts; then
+        echo "192.168.100.202 node2 node2.ceph.local" >> /etc/hosts
       fi
-      if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
-        echo "192.168.100.203 node3" >> /etc/hosts
+      if ! grep -q '^192.168.100.203 node3 node3.ceph.local$' /etc/hosts; then
+        echo "192.168.100.203 node3 node3.ceph.local" >> /etc/hosts
       fi
 
       #{common_provision}
@@ -116,11 +116,11 @@ Vagrant.configure("2") do |config|
     node2.vm.network :private_network, ip: "192.168.100.202"
     node2.vm.provision "shell", inline: <<-SHELL
       hostnamectl set-hostname node2.ceph.local
-      if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
-        echo "192.168.100.201 node1" >> /etc/hosts
+      if ! grep -q '^192.168.100.201 node1 node1.ceph.local$' /etc/hosts; then
+        echo "192.168.100.201 node1 node1.ceph.local" >> /etc/hosts
       fi
-      if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
-        echo "192.168.100.203 node3" >> /etc/hosts
+      if ! grep -q '^192.168.100.203 node3 node3.ceph.local$' /etc/hosts; then
+        echo "192.168.100.203 node3 node3.ceph.local" >> /etc/hosts
       fi
 
       #{common_provision}
@@ -132,11 +132,11 @@ Vagrant.configure("2") do |config|
     node3.vm.network :private_network, ip: "192.168.100.203"
     node3.vm.provision "shell", inline: <<-SHELL
       hostnamectl set-hostname node3.ceph.local
-      if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
-        echo "192.168.100.201 node1" >> /etc/hosts
+      if ! grep -q '^192.168.100.201 node1 node1.ceph.local$' /etc/hosts; then
+        echo "192.168.100.201 node1 node1.ceph.local" >> /etc/hosts
       fi
-      if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
-        echo "192.168.100.202 node2" >> /etc/hosts
+      if ! grep -q '^192.168.100.202 node2 node2.ceph.local$' /etc/hosts; then
+        echo "192.168.100.202 node2 node2.ceph.local" >> /etc/hosts
       fi
 
       #{common_provision}

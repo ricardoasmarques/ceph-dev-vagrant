@@ -49,6 +49,7 @@ trusted_ip_list = 192.168.100.201,192.168.100.202,192.168.100.203,192.168.100.1
 # Uncomment this to enable password encryption
 priv_key = private_key
 pub_key = public_key
+fqdn_enabled = true
 EOF
 
 sudo cp /home/vagrant/keys/* /etc/ceph/
