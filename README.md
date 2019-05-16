@@ -8,6 +8,8 @@
     - `# zypper install libvirt-devel libvirt-daemon`
     - `# systemctl enable libvirtd`
     - `# systemctl restart libvirtd`
+- Vagrant
+    - `# zypper in ruby-devel gcc make zlib-devel`
 - Optionally, virtual machine manager can be useful
     - `# zypper in virt-manager`
 
