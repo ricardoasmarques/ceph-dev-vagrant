@@ -78,8 +78,8 @@ cd /disks
 create pool=rbd image=disk_1 size=90G
 cd /iscsi-target/iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw/hosts
 create iqn.1994-05.com.redhat:rh7-client
-auth chap=myiscsiusername/myiscsipassword
-disk add rbd.disk_1
+auth username=myiscsiusername password=myiscsipassword
+disk add rbd/disk_1
 ```
 
 More information can be found at:
