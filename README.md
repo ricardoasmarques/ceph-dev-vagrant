@@ -63,7 +63,7 @@ sudo gwcli
 
 ```
 # Create iSCSI target and gateways
-cd /iscsi-target
+cd /iscsi-targets
 create iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw
 cd iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw/gateways
 create node1 192.168.100.201 skipchecks=true
@@ -76,7 +76,7 @@ Wait a bit, so the creation of gateways can finish.
 # Add RBD image and disk
 cd /disks
 create pool=rbd image=disk_1 size=90G
-cd /iscsi-target/iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw/hosts
+cd /iscsi-targets/iqn.2003-01.com.redhat.iscsi-gw:iscsi-igw/hosts
 create iqn.1994-05.com.redhat:rh7-client
 auth username=myiscsiusername password=myiscsipassword
 disk add rbd/disk_1
