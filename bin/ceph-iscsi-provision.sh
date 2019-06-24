@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-zypper -n install targetcli-fb tcmu-runner python3-configshell \
+zypper -n install targetcli-fb tcmu-runner python3-configshell python3-distro\
                   python3-netifaces python3-netaddr python3-rpm \
                   python3-Flask python3-pyOpenSSL tcmu-runner-handler-rbd \
                   open-iscsi libiscsi-utils multipath-tools
