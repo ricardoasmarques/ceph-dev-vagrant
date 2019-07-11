@@ -96,15 +96,15 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :node1 do |node1|
-    node1.vm.hostname = "node1.ceph.local"
+    node1.vm.hostname = "node1"
     node1.vm.network :private_network, ip: "192.168.100.201"
     node1.vm.provision "shell", inline: <<-SHELL
-      hostnamectl set-hostname node1.ceph.local
-      if ! grep -q '^192.168.100.202 node2 node2.ceph.local$' /etc/hosts; then
-        echo "192.168.100.202 node2 node2.ceph.local" >> /etc/hosts
+      hostnamectl set-hostname node1
+      if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
+        echo "192.168.100.202 node2" >> /etc/hosts
       fi
-      if ! grep -q '^192.168.100.203 node3 node3.ceph.local$' /etc/hosts; then
-        echo "192.168.100.203 node3 node3.ceph.local" >> /etc/hosts
+      if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
+        echo "192.168.100.203 node3" >> /etc/hosts
       fi
 
       #{common_provision}
@@ -112,15 +112,15 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :node2 do |node2|
-    node2.vm.hostname = "node2.ceph.local"
+    node2.vm.hostname = "node2"
     node2.vm.network :private_network, ip: "192.168.100.202"
     node2.vm.provision "shell", inline: <<-SHELL
-      hostnamectl set-hostname node2.ceph.local
-      if ! grep -q '^192.168.100.201 node1 node1.ceph.local$' /etc/hosts; then
-        echo "192.168.100.201 node1 node1.ceph.local" >> /etc/hosts
+      hostnamectl set-hostname node2
+      if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
+        echo "192.168.100.201 node1" >> /etc/hosts
       fi
-      if ! grep -q '^192.168.100.203 node3 node3.ceph.local$' /etc/hosts; then
-        echo "192.168.100.203 node3 node3.ceph.local" >> /etc/hosts
+      if ! grep -q '^192.168.100.203 node3$' /etc/hosts; then
+        echo "192.168.100.203 node3" >> /etc/hosts
       fi
 
       #{common_provision}
@@ -128,15 +128,15 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :node3 do |node3|
-    node3.vm.hostname = "node3.ceph.local"
+    node3.vm.hostname = "node3"
     node3.vm.network :private_network, ip: "192.168.100.203"
     node3.vm.provision "shell", inline: <<-SHELL
-      hostnamectl set-hostname node3.ceph.local
-      if ! grep -q '^192.168.100.201 node1 node1.ceph.local$' /etc/hosts; then
-        echo "192.168.100.201 node1 node1.ceph.local" >> /etc/hosts
+      hostnamectl set-hostname node3
+      if ! grep -q '^192.168.100.201 node1$' /etc/hosts; then
+        echo "192.168.100.201 node1" >> /etc/hosts
       fi
-      if ! grep -q '^192.168.100.202 node2 node2.ceph.local$' /etc/hosts; then
-        echo "192.168.100.202 node2 node2.ceph.local" >> /etc/hosts
+      if ! grep -q '^192.168.100.202 node2$' /etc/hosts; then
+        echo "192.168.100.202 node2" >> /etc/hosts
       fi
 
       #{common_provision}
