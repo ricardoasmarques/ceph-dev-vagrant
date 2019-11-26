@@ -14,8 +14,6 @@ if [ -z $1 ]; then
   sudo python3 setup.py install
   sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-gw.service /usr/lib/systemd/system
   sudo cp /home/vagrant/ceph-iscsi/usr/lib/systemd/system/rbd-target-api.service /usr/lib/systemd/system
-  sudo mkdir -p /usr/lib/systemd/system/rbd-target-gw.service.d
-  sudo cp /home/vagrant/ceph-iscsi/etc/systemd/system/rbd-target-gw.service.d/* /usr/lib/systemd/system/rbd-target-gw.service.d/
   sudo systemctl daemon-reload
 else
   sudo zypper -n install ceph-iscsi
