@@ -49,13 +49,17 @@ Vagrant.configure("2") do |config|
     lv.nic_model_type = "e1000"
 
     override.vm.synced_folder ceph_repo, '/home/vagrant/ceph', type: 'nfs',
+                          nfs_version: 4,
+                          nfs_udp: false,
                           :nfs_export => nfs_auto_export,
-                          :mount_options => ['nolock,vers=3,udp,noatime,actimeo=1'],
+                          :mount_options => ['nolock,noatime,actimeo=1'],
                           :linux__nfs_options => ['rw','no_subtree_check','all_squash','insecure']
 
     override.vm.synced_folder ceph_iscsi_repo, '/home/vagrant/ceph-iscsi', type: 'nfs',
+                          nfs_version: 4,
+                          nfs_udp: false,
                           :nfs_export => nfs_auto_export,
-                          :mount_options => ['nolock,vers=3,udp,noatime,actimeo=1'],
+                          :mount_options => ['nolock,noatime,actimeo=1'],
                           :linux__nfs_options => ['rw','no_subtree_check','all_squash','insecure']
   end
 
