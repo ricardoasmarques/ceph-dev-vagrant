@@ -17,11 +17,13 @@
 
 Get the `opensuse-leap-15.1` vagrant box:
 
-    wget https://download.opensuse.org/repositories/home:/rjdias:/branches:/home:/jloehel:/vagrant:/images/images_leap_15_1/leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.11.2.vagrant.libvirt.box
+    # Go to https://download.opensuse.org/repositories/home:/rjdias:/branches:/home:/jloehel:/vagrant:/images/images_leap_15_1/
+    # Copy the <VAGRANT_BOX_URL> for the `.vagrant.libvirt.box` file
+    wget <VAGRANT_BOX_URL>
 
 Add the `opensuse-leap-15.1` box to vagrant:
 
-    vagrant box add opensuse-leap-15.1 leap-15.1.x86_64-1.15.1-libvirt-Buildlp151.11.2.vagrant.libvirt.box
+    vagrant box add opensuse-leap-15.1 <VAGRANT_BOX_FILENAME>
 
 Install the `vagrant-libvirt` plugin
 
@@ -33,7 +35,7 @@ Install the `vagrant-libvirt` plugin
 
 - `vagrant up --provider libvirt`
 
-> If you experience an error while running vagrant up, try the following: 
+> If you experience an error while running vagrant up, try the following:
 > \- `#zypper in libgcrypt-devel`
 > \- `#systemctl stop vboxdrv`
 > \- `#systemctl start nfs`
